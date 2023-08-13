@@ -51,6 +51,10 @@ export default [
     icon: 'table',
     routes: [
       {
+        path: '/article',
+        redirect: '/article/list',
+      },
+      {
         path: '/article/list',
         name: 'list',
         component: './Article/List',

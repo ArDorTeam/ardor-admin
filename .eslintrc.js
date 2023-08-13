@@ -4,4 +4,8 @@ module.exports = {
     page: true,
     REACT_APP_ENV: true,
   },
+  // plugins: ['prettier'],
+  // rules: {
+  //   'prettier/prettier': 'error',
+  // },
 };
