@@ -46,6 +46,18 @@ export default [
     ],
   },
   {
+    path: '/article',
+    name: 'article',
+    icon: 'table',
+    routes: [
+      {
+        path: '/article/list',
+        name: 'list',
+        component: './Article/List',
+      },
+    ],
+  },
+  {
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
