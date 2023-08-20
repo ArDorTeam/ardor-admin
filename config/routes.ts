@@ -46,26 +46,52 @@ export default [
     ],
   },
   {
-    path: '/article',
-    name: 'article',
+    path: '/blog',
+    name: 'blog',
     icon: 'table',
     routes: [
       {
-        path: '/article',
-        redirect: '/article/list',
+        path: '/blog',
+        redirect: '/blog/list',
       },
       {
-        path: '/article/list',
+        path: '/blog/list',
         name: 'list',
-        component: './Article/List',
+        component: './BlogList',
+      },
+      {
+        path: '/blog/writing/:id',
+        component: './BlogWriting',
+        hideChildrenInMenu: true,
+        headerRender: false, // 当前路由不展示顶栏
+        footerRender: false, // 当前路由不展示页脚
+        menuRender: false, // 当前路由不展示菜单
       },
     ],
   },
   {
-    name: 'list.table-list',
+    path: '/userManage',
+    name: 'userManage',
     icon: 'table',
-    path: '/list',
-    component: './TableList',
+    routes: [
+      {
+        path: '/userManage/list',
+        name: 'list',
+        component: './UserManage',
+      },
+    ],
+  },
+  {
+    path: '/about',
+    component: './About',
+    name: 'about',
+    icon: 'table',
+  },
+  {
+    path: '/log',
+    component: './Log',
+    name: 'log',
+    icon: 'table',
   },
   {
     path: '/',
@@ -75,9 +101,5 @@ export default [
     path: '*',
     layout: false,
     component: './404',
-  },
-  {
-    path: '/markdown',
-    component: './Markdown',
   },
 ];

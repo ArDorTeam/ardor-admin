@@ -1,0 +1,22 @@
+.blog-writing-container {
+  background: #fff;
+  > .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 27px;
+    > .title-input {
+      flex: 1;
+      margin-right: 10px;
+      border: none !important;
+      &:focus {
+        box-shadow: none !important;
+      }
+    }
+  }
+
+  > .editor {
+    z-index: 10000;
+    height: 100%;
+  }
+}
