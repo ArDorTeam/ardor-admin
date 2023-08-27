@@ -25,17 +25,17 @@ const App: React.FC = () => {
   const intl = useIntl();
 
   return (
-    <div className={style['blog-writing-container']}>
+    <div className={style['article-writing-container']}>
       <div className={style.header}>
         <Input
           placeholder={intl.formatMessage({
-            id: 'blog.writing.placeholder',
+            id: 'article.writing.placeholder',
             defaultMessage: 'enter title',
           })}
           className={style['title-input']}
         />
         <Button type="primary">
-          <FormattedMessage id="blog.writing.public" defaultMessage="public" />
+          <FormattedMessage id="article.writing.public" defaultMessage="public" />
         </Button>
       </div>
       <div className={style.editor}>

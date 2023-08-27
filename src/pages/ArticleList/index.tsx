@@ -106,7 +106,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: <FormattedMessage id="blog.table.title" defaultMessage="title" />,
+      title: <FormattedMessage id="article.table.title" defaultMessage="title" />,
       dataIndex: 'title',
       render: (dom, entity) => {
         return (
@@ -122,19 +122,23 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="blog.table.createTime" defaultMessage="blog create time" />,
+      title: (
+        <FormattedMessage id="article.table.createTime" defaultMessage="article create time" />
+      ),
       dataIndex: 'createTime',
       valueType: 'textarea',
       sorter: true,
     },
     {
-      title: <FormattedMessage id="blog.table.updateTime" defaultMessage="blog update time" />,
+      title: (
+        <FormattedMessage id="article.table.updateTime" defaultMessage="article update time" />
+      ),
       dataIndex: 'updateTime',
       sorter: true,
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="blog.table.pageView" defaultMessage="Status" />,
+      title: <FormattedMessage id="article.table.pageView" defaultMessage="Status" />,
       dataIndex: 'pageView',
       hideInForm: true,
       valueEnum: {
@@ -172,7 +176,7 @@ const TableList: React.FC = () => {
     },
     {
       title: (
-        <FormattedMessage id="blog.table.classification" defaultMessage="Last scheduled time" />
+        <FormattedMessage id="article.table.classification" defaultMessage="Last scheduled time" />
       ),
       dataIndex: 'classification',
       valueType: 'dateTime',
@@ -196,25 +200,25 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="blog.table.tags" defaultMessage="blog tags" />,
+      title: <FormattedMessage id="article.table.tags" defaultMessage="article tags" />,
       dataIndex: 'tags',
       valueType: 'textarea',
     },
     {
-      title: <FormattedMessage id="blog.table.top" defaultMessage="blog is top" />,
+      title: <FormattedMessage id="article.table.top" defaultMessage="article is top" />,
       dataIndex: 'top',
       valueType: 'textarea',
     },
     {
-      title: <FormattedMessage id="blog.table.option" defaultMessage="Operating" />,
+      title: <FormattedMessage id="article.table.option" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: () => [
-        <Link key="config" to="/blog/writing/222" target="_blank">
-          <FormattedMessage id="blog.table.edit" defaultMessage="Configuration" />
+        <Link key="config" to="/article/writing/222" target="_blank">
+          <FormattedMessage id="article.table.edit" defaultMessage="Configuration" />
         </Link>,
         <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage id="blog.table.delete" defaultMessage="Subscribe to alerts" />
+          <FormattedMessage id="article.table.delete" defaultMessage="Subscribe to alerts" />
         </a>,
       ],
     },
@@ -230,8 +234,8 @@ const TableList: React.FC = () => {
         }}
         toolBarRender={() => [
           <Button type="primary" key="primary">
-            <Link key="config" to="/blog/writing/new" target="_blank">
-              <FormattedMessage id="blog.table.writing" defaultMessage="writing" />
+            <Link key="config" to="/article/writing/new" target="_blank">
+              <FormattedMessage id="article.table.writing" defaultMessage="writing" />
             </Link>
           </Button>,
         ]}

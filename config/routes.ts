@@ -46,22 +46,22 @@ export default [
     ],
   },
   {
-    path: '/blog',
-    name: 'blog',
+    path: '/article',
+    name: 'article',
     icon: 'table',
     routes: [
       {
-        path: '/blog',
-        redirect: '/blog/list',
+        path: '/article',
+        redirect: '/article/list',
       },
       {
-        path: '/blog/list',
+        path: '/article/list',
         name: 'list',
-        component: './BlogList',
+        component: './ArticleList',
       },
       {
-        path: '/blog/writing/:id',
-        component: './BlogWriting',
+        path: '/article/edit/:id',
+        component: './ArticleEdit',
         hideChildrenInMenu: true,
         headerRender: false, // 当前路由不展示顶栏
         footerRender: false, // 当前路由不展示页脚
