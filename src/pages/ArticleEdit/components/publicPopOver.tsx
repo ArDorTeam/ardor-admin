@@ -1,14 +1,9 @@
-import {
-  ProFormDateTimePicker,
-  ProFormRadio,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-  StepsForm,
-} from '@ant-design/pro-components';
+import { PlusOutlined } from '@ant-design/icons';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Modal } from 'antd';
-import React from 'react';
+import { Button, Form, Input, Popover, Radio, Select, Space, Upload } from 'antd';
+import React, { useState } from 'react';
+
+import style from '../index.less';
 
 export type FormValueType = {
   target?: string;
@@ -16,194 +11,215 @@ export type FormValueType = {
   type?: string;
   time?: string;
   frequency?: string;
-} & Partial<API.RuleListItem>;
-
-export type UpdateFormProps = {
-  onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: FormValueType) => Promise<void>;
-  updateModalOpen: boolean;
-  values: Partial<API.RuleListItem>;
 };
 
-const UpdateForm: React.FC<UpdateFormProps> = (props) => {
+const { TextArea } = Input;
+const { Option } = Select;
+
+type locals = {
+  title: string;
+  category: string;
+  categoryRule: string;
+  tag: string;
+  tagRule: string;
+  cover: string;
+  coverUploadText: string;
+  abstract: string;
+  abstractRule: string;
+  public: string;
+  cancel: string;
+};
+
+type tags = {
+  value: number;
+  name: string;
+};
+
+const formItemLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 15 },
+};
+
+const normFile = (e: any) => {
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};
+
+const onFinish = (values: any) => {
+  console.log('Received values of form: ', values);
+};
+
+const PublicPopOver: React.FC = () => {
   const intl = useIntl();
+  const [open, setOpen] = useState<boolean>(false);
+  const [tagArr] = useState<tags[]>([
+    { name: '算法', value: 1 },
+    { name: '性能优化', value: 2 },
+    { name: '架构', value: 3 },
+  ]);
+  const [categoryArr] = useState<string[]>([
+    '前端',
+    '后端',
+    'Android',
+    'IOS',
+    '人工智能',
+    '开发工具',
+    '代码人生',
+    '阅读',
+  ]);
+  const [locals] = useState<locals>({
+    title: intl.formatMessage({
+      id: 'article.writing.popover.title',
+      defaultMessage: 'public article',
+    }),
+    category: intl.formatMessage({
+      id: 'article.writing.popover.class',
+      defaultMessage: '分类',
+    }),
+    categoryRule: intl.formatMessage({
+      id: 'article.writing.popover.classRule',
+      defaultMessage: '请选择分类',
+    }),
+    tag: intl.formatMessage({
+      id: 'article.writing.popover.tag',
+      defaultMessage: '添加标签',
+    }),
+    tagRule: intl.formatMessage({
+      id: 'article.writing.popover.tagRule',
+      defaultMessage: '请选择标签',
+    }),
+    cover: intl.formatMessage({
+      id: 'article.writing.popover.cover',
+      defaultMessage: '封面',
+    }),
+    coverUploadText: intl.formatMessage({
+      id: 'article.writing.popover.coverUploadText',
+      defaultMessage: '上传封面',
+    }),
+    abstract: intl.formatMessage({
+      id: 'article.writing.popover.abstract',
+      defaultMessage: '编辑摘要',
+    }),
+    abstractRule: intl.formatMessage({
+      id: 'article.writing.popover.abstractRule',
+      defaultMessage: '请填写编辑摘要',
+    }),
+    public: intl.formatMessage({
+      id: 'article.writing.popover.public',
+      defaultMessage: '确定并发布',
+    }),
+    cancel: intl.formatMessage({
+      id: 'global.cancel',
+      defaultMessage: '取消',
+    }),
+  });
+
+  const hide = () => {
+    setOpen(false);
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
+
   return (
-    <StepsForm
-      stepsProps={{
-        size: 'small',
-      }}
-      stepsFormRender={(dom, submitter) => {
-        return (
-          <Modal
-            width={640}
-            bodyStyle={{ padding: '32px 40px 48px' }}
-            destroyOnClose
-            title={intl.formatMessage({
-              id: 'pages.searchTable.updateForm.ruleConfig',
-              defaultMessage: '规则配置',
-            })}
-            open={props.updateModalOpen}
-            footer={submitter}
-            onCancel={() => {
-              props.onCancel();
-            }}
+    <Popover
+      title={locals.title}
+      overlayClassName={style['article-public-form']}
+      trigger="click"
+      open={open}
+      onOpenChange={handleOpenChange}
+      placement="bottomLeft"
+      content={
+        <Form
+          name="validate_other"
+          {...formItemLayout}
+          onFinish={onFinish}
+          initialValues={{
+            category: '前端',
+            tag: [],
+            abstract: '',
+          }}
+          style={{ maxWidth: 500 }}
+        >
+          <Form.Item
+            name="category"
+            label={locals.category}
+            rules={[{ required: true, message: locals.categoryRule }]}
           >
-            {dom}
-          </Modal>
-        );
-      }}
-      onFinish={props.onSubmit}
+            <Radio.Group>
+              {categoryArr.map((item) => (
+                <Radio.Button value={item} key={item}>
+                  {item}
+                </Radio.Button>
+              ))}
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            name="tag"
+            label={locals.tag}
+            rules={[
+              {
+                required: true,
+                message: locals.tagRule,
+                type: 'array',
+              },
+            ]}
+          >
+            <Select mode="multiple" placeholder={locals.tagRule} allowClear>
+              {tagArr.map((item) => (
+                <Option value={item.value} key={item.value}>
+                  {item.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label={locals.cover}>
+            <Form.Item name="cover" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+              <Upload.Dragger name="files" action="/upload.do">
+                <p className="ant-upload-drag-icon">
+                  <PlusOutlined />
+                </p>
+                <p className="ant-upload-text">{locals.coverUploadText}</p>
+              </Upload.Dragger>
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item
+            label={locals.abstract}
+            name="abstract"
+            rules={[
+              {
+                required: true,
+                message: locals.abstractRule,
+                type: 'array',
+              },
+            ]}
+          >
+            <TextArea placeholder={locals.abstractRule} showCount maxLength={100} />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
+            <Space>
+              <Button onClick={hide}>{locals.cancel}</Button>
+              <Button type="primary" htmlType="submit">
+                {locals.public}
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      }
     >
-      <StepsForm.StepForm
-        initialValues={{
-          name: props.values.name,
-          desc: props.values.desc,
-        }}
-        title={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.basicConfig',
-          defaultMessage: '基本信息',
-        })}
-      >
-        <ProFormText
-          name="name"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleName.nameLabel',
-            defaultMessage: '规则名称',
-          })}
-          width="md"
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.updateForm.ruleName.nameRules"
-                  defaultMessage="请输入规则名称！"
-                />
-              ),
-            },
-          ]}
-        />
-        <ProFormTextArea
-          name="desc"
-          width="md"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleDesc.descLabel',
-            defaultMessage: '规则描述',
-          })}
-          placeholder={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleDesc.descPlaceholder',
-            defaultMessage: '请输入至少五个字符',
-          })}
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.updateForm.ruleDesc.descRules"
-                  defaultMessage="请输入至少五个字符的规则描述！"
-                />
-              ),
-              min: 5,
-            },
-          ]}
-        />
-      </StepsForm.StepForm>
-      <StepsForm.StepForm
-        initialValues={{
-          target: '0',
-          template: '0',
-        }}
-        title={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.ruleProps.title',
-          defaultMessage: '配置规则属性',
-        })}
-      >
-        <ProFormSelect
-          name="target"
-          width="md"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.object',
-            defaultMessage: '监控对象',
-          })}
-          valueEnum={{
-            0: '表一',
-            1: '表二',
-          }}
-        />
-        <ProFormSelect
-          name="template"
-          width="md"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleProps.templateLabel',
-            defaultMessage: '规则模板',
-          })}
-          valueEnum={{
-            0: '规则模板一',
-            1: '规则模板二',
-          }}
-        />
-        <ProFormRadio.Group
-          name="type"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.ruleProps.typeLabel',
-            defaultMessage: '规则类型',
-          })}
-          options={[
-            {
-              value: '0',
-              label: '强',
-            },
-            {
-              value: '1',
-              label: '弱',
-            },
-          ]}
-        />
-      </StepsForm.StepForm>
-      <StepsForm.StepForm
-        initialValues={{
-          type: '1',
-          frequency: 'month',
-        }}
-        title={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.schedulingPeriod.title',
-          defaultMessage: '设定调度周期',
-        })}
-      >
-        <ProFormDateTimePicker
-          name="time"
-          width="md"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.schedulingPeriod.timeLabel',
-            defaultMessage: '开始时间',
-          })}
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.updateForm.schedulingPeriod.timeRules"
-                  defaultMessage="请选择开始时间！"
-                />
-              ),
-            },
-          ]}
-        />
-        <ProFormSelect
-          name="frequency"
-          label={intl.formatMessage({
-            id: 'pages.searchTable.updateForm.object',
-            defaultMessage: '监控对象',
-          })}
-          width="md"
-          valueEnum={{
-            month: '月',
-            week: '周',
-          }}
-        />
-      </StepsForm.StepForm>
-    </StepsForm>
+      <Button type="primary">
+        <FormattedMessage id="article.writing.public" defaultMessage="public" />
+      </Button>
+    </Popover>
   );
 };
 
-export default UpdateForm;
+export default PublicPopOver;

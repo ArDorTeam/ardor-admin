@@ -175,10 +175,8 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: (
-        <FormattedMessage id="article.table.classification" defaultMessage="Last scheduled time" />
-      ),
-      dataIndex: 'classification',
+      title: <FormattedMessage id="article.table.category" defaultMessage="Last scheduled time" />,
+      dataIndex: 'category',
       valueType: 'dateTime',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
@@ -234,7 +232,7 @@ const TableList: React.FC = () => {
         }}
         toolBarRender={() => [
           <Button type="primary" key="primary">
-            <Link key="config" to="/article/writing/new" target="_blank">
+            <Link key="config" to="/article/edit/new" target="_blank">
               <FormattedMessage id="article.table.writing" defaultMessage="writing" />
             </Link>
           </Button>,
