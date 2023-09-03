@@ -98,4 +98,35 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type ArticleListParams = PageParams & {
+    title?: string;
+  };
+
+  type PageSort = {
+    [K: string]: 'descend' | 'ascend' | null;
+  };
+
+  type ArticleList = {
+    data?: ArticleListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+    code?: number;
+    message?: string;
+  };
+
+  type ArticleListItem = {
+    id: string; // 主键id
+    article_id: string; // 文章id
+    article_type: string; // 文章类型
+    title: string; // 文章标题
+    sub_title: string; //文章摘要
+    cover_url?: string; // 封面图
+    content?: string; // 文章内容
+    visits: string; // 浏览次数
+    is_recommend: string; // 是否置顶
+    gmt_create: string; // 创建时间
+    gmt_modified: string; // 更新时间
+  };
 }

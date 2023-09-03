@@ -181,7 +181,7 @@ const PublicPopOver: React.FC = () => {
 
           <Form.Item label={locals.cover}>
             <Form.Item name="cover" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-              <Upload.Dragger name="files" action="/upload.do">
+              <Upload.Dragger name="file" action="/api/v1/upload/upload">
                 <p className="ant-upload-drag-icon">
                   <PlusOutlined />
                 </p>
