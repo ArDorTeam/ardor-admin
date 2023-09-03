@@ -2,7 +2,7 @@ import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
+import { ProForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
@@ -64,6 +64,15 @@ const Login: React.FC = () => {
       backgroundSize: '100% 100%',
     };
   });
+  const formWrapperClassName = useEmotionCss(() => {
+    return {
+      flex: '1',
+      padding: '32px 0',
+      maxWidth: '75vw',
+      minWidth: 280,
+      margin: '0 auto',
+    };
+  });
 
   const intl = useIntl();
 
@@ -120,25 +129,36 @@ const Login: React.FC = () => {
         </title>
       </Helmet>
       <Lang />
-      <div
-        style={{
-          flex: '1',
-          padding: '32px 0',
-        }}
-      >
-        <LoginForm
-          contentStyle={{
-            minWidth: 280,
-            maxWidth: '75vw',
-          }}
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Ardor"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
-          initialValues={{
-            autoLogin: true,
-          }}
-          onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+      <div className={formWrapperClassName}>
+        <div className="ant-pro-form-login-top" style={{ paddingTop: '24px' }}>
+          <div className="ant-pro-form-login-header ">
+            <span className="ant-pro-form-login-logo ">
+              <img alt="logo" src="/logo.svg" />
+            </span>
+            <span className="ant-pro-form-login-title ">Ardor</span>
+          </div>
+          <div className="ant-pro-form-login-desc ">
+            {intl.formatMessage({
+              id: 'pages.layouts.userLayout.title',
+              defaultMessage: 'ardor牛逼',
+            })}
+          </div>
+        </div>
+        <ProForm
+          onFinish={handleSubmit}
+          submitter={{
+            submitButtonProps: {
+              size: 'large',
+              block: true,
+            },
+            resetButtonProps: {
+              style: {
+                display: 'none',
+              },
+            },
+            searchConfig: {
+              submitText: '提交',
+            },
           }}
         >
           <Tabs
@@ -281,7 +301,7 @@ const Login: React.FC = () => {
               <FormattedMessage id="pages.login.register.login" defaultMessage="账号登录" />
             </Link>
           </div>
-        </LoginForm>
+        </ProForm>
       </div>
       <Footer />
     </div>

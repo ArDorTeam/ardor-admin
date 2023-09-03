@@ -1,15 +1,14 @@
 import { addRule, getArticleList, updateRule } from '@/services/ant-design-pro/api';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import {
   ModalForm,
   PageContainer,
-  ProDescriptions,
   ProFormText,
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import { Link } from 'umi';
 import type { FormValueType } from './components/UpdateForm';
@@ -96,7 +95,7 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
+  const [currentRow, setCurrentRow] = useState<API.ArticleListItem>();
 
   /**
    * @en-US International configuration
@@ -104,7 +103,7 @@ const TableList: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.ArticleListItem>[] = [
     {
       title: <FormattedMessage id="article.table.title" defaultMessage="title" />,
       dataIndex: 'title',
@@ -194,7 +193,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.ArticleListItem, API.PageParams>
         actionRef={actionRef}
         rowKey="key"
         search={{
@@ -305,7 +304,7 @@ const TableList: React.FC = () => {
         values={currentRow || {}}
       />
 
-      <Drawer
+      {/* <Drawer
         width={600}
         open={showDetail}
         onClose={() => {
@@ -327,7 +326,7 @@ const TableList: React.FC = () => {
             columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
           />
         )}
-      </Drawer>
+      </Drawer> */}
     </PageContainer>
   );
 };
