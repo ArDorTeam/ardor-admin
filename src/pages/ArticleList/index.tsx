@@ -1,4 +1,4 @@
-import { addRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addRule, getArticleList, updateRule } from '@/services/ant-design-pro/api';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   ModalForm,
@@ -125,59 +125,29 @@ const TableList: React.FC = () => {
       title: (
         <FormattedMessage id="article.table.createTime" defaultMessage="article create time" />
       ),
-      dataIndex: 'createTime',
-      valueType: 'textarea',
+      dataIndex: 'gmt_create',
+      valueType: 'dateTime',
       sorter: true,
     },
     {
       title: (
         <FormattedMessage id="article.table.updateTime" defaultMessage="article update time" />
       ),
-      dataIndex: 'updateTime',
+      dataIndex: 'gmt_modified',
+      valueType: 'dateTime',
       sorter: true,
       hideInForm: true,
     },
     {
       title: <FormattedMessage id="article.table.pageView" defaultMessage="Status" />,
-      dataIndex: 'pageView',
+      dataIndex: 'visits',
+      hideInSearch: true,
       hideInForm: true,
-      valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
-          ),
-          status: 'Default',
-        },
-        1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
-          ),
-          status: 'Processing',
-        },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
-          ),
-          status: 'Success',
-        },
-        3: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
-          ),
-          status: 'Error',
-        },
-      },
     },
     {
-      title: <FormattedMessage id="article.table.category" defaultMessage="Last scheduled time" />,
-      dataIndex: 'category',
-      valueType: 'dateTime',
+      title: <FormattedMessage id="article.table.category" defaultMessage="article category" />,
+      dataIndex: 'article_type',
+      valueType: 'select',
       renderFormItem: (item, { defaultRender, ...rest }, form) => {
         const status = form.getFieldValue('status');
         if (`${status}` === '0') {
@@ -204,7 +174,7 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="article.table.top" defaultMessage="article is top" />,
-      dataIndex: 'top',
+      dataIndex: 'is_recommend',
       valueType: 'textarea',
     },
     {
@@ -212,7 +182,7 @@ const TableList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: () => [
-        <Link key="config" to="/article/writing/222" target="_blank">
+        <Link key="config" to="/article/edit/222" target="_blank">
           <FormattedMessage id="article.table.edit" defaultMessage="Configuration" />
         </Link>,
         <a key="subscribeAlert" href="https://procomponents.ant.design/">
@@ -237,7 +207,7 @@ const TableList: React.FC = () => {
             </Link>
           </Button>,
         ]}
-        request={rule}
+        request={getArticleList}
         columns={columns}
       />
       {/* {selectedRowsState?.length > 0 && (

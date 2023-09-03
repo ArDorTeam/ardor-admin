@@ -83,3 +83,16 @@ export async function removeRule(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+/** 获取文章列表 POST /api/v1/articleList */
+export async function getArticleList(
+  params: API.ArticleListParams,
+  sort: API.PageSort,
+  options?: { [key: string]: any },
+) {
+  return request<API.ArticleList>('/api/v1/article/getArticleList', {
+    method: 'POST',
+    data: { ...params, sort },
+    ...(options || {}),
+  });
+}
