@@ -12,22 +12,48 @@ export async function currentUser(options?: { [key: string]: any }) {
   });
 }
 
-/** 退出登录接口 POST /api/login/outLogin */
-export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
+/** 退出登录接口 POST /api/v1/auth/logout */
+export async function outLogin(body: API.LogoutParams, options?: { [key: string]: any }) {
+  return request<API.LogoutResult>('/api/v1/auth/logout', {
     method: 'POST',
+    data: body,
     ...(options || {}),
   });
 }
 
-/** 登录接口 POST /api/login/account */
+/** 登录接口 POST /api/v1/auth/signin */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/api/v1/auth/signin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** 注册接口 POST /api/v1/auth/signup */
+export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {
+  return request<API.RegisterResult>('/api/v1/auth/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 获取文章列表 POST /api/v1/article/getArticleList */
+export async function getArticleList(
+  params: API.ArticleListParams,
+  sort: API.PageSort,
+  options?: { [key: string]: any },
+) {
+  return request<API.ArticleList>('/api/v1/article/getArticleList', {
+    method: 'POST',
+    data: { ...params, sort },
     ...(options || {}),
   });
 }
@@ -80,19 +106,6 @@ export async function addRule(options?: { [key: string]: any }) {
 export async function removeRule(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/api/rule', {
     method: 'DELETE',
-    ...(options || {}),
-  });
-}
-
-/** 获取文章列表 POST /api/v1/articleList */
-export async function getArticleList(
-  params: API.ArticleListParams,
-  sort: API.PageSort,
-  options?: { [key: string]: any },
-) {
-  return request<API.ArticleList>('/api/v1/article/getArticleList', {
-    method: 'POST',
-    data: { ...params, sort },
     ...(options || {}),
   });
 }

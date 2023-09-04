@@ -5,7 +5,7 @@ declare namespace API {
   type CurrentUser = {
     name?: string;
     avatar?: string;
-    userid?: string;
+    user_id?: string;
     email?: string;
     signature?: string;
     title?: string;
@@ -21,12 +21,6 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
-  };
-
-  type LoginResult = {
-    status?: string;
-    type?: string;
-    currentAuthority?: string;
   };
 
   type PageParams = {
@@ -61,13 +55,6 @@ declare namespace API {
     status?: string;
   };
 
-  type LoginParams = {
-    username?: string;
-    password?: string;
-    autoLogin?: boolean;
-    type?: string;
-  };
-
   type ErrorResponse = {
     /** 业务约定的错误码 */
     errorCode: string;
@@ -97,6 +84,39 @@ declare namespace API {
     datetime?: string;
     description?: string;
     type?: NoticeIconItemType;
+  };
+
+  type LoginResult = {
+    code?: number;
+    data?: { tokens: string };
+    msg?: string;
+  };
+
+  type LoginParams = {
+    email: string;
+    password: string;
+  };
+
+  type RegisterParams = {
+    email: string;
+    password: string;
+    captcha: string;
+  };
+
+  type RegisterResult = {
+    code?: number;
+    data?: { tokens: string };
+    msg?: string;
+  };
+
+  type LogoutParams = {
+    user_id?: string;
+  };
+
+  type LogoutResult = {
+    code?: number;
+    data?: object;
+    msg?: string;
   };
 
   type ArticleListParams = PageParams & {
