@@ -3,24 +3,20 @@
 
 declare namespace API {
   type CurrentUser = {
-    name?: string;
-    avatar?: string;
     user_id?: string;
+    user_avatar?: string;
+    user_name?: string;
+    mobile?: string;
+    toekn?: string;
+    role_id?: string;
+    status?: string;
     email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+  };
+
+  type CurrentUserResult = {
+    code: number;
+    data?: CurrentUser;
+    msg: string;
   };
 
   type PageParams = {
@@ -88,7 +84,7 @@ declare namespace API {
 
   type LoginResult = {
     code?: number;
-    data?: { tokens: string };
+    data?: { access_token?: string; refresh_token?: string };
     msg?: string;
   };
 

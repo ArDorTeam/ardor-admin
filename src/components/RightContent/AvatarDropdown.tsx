@@ -17,7 +17,7 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  return <span className="anticon">{currentUser?.name}</span>;
+  return <span className="anticon">{currentUser?.user_name}</span>;
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {
@@ -27,19 +27,28 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    * 退出登录，并且将当前的 url 保存
    */
   const loginOut = async () => {
-    await outLogin({ user_id: initialState?.currentUser?.user_id });
-    const { search, pathname } = window.location;
-    const urlParams = new URL(window.location.href).searchParams;
-    /** 此方法会跳转到 redirect 参数所在的位置 */
-    const redirect = urlParams.get('redirect');
-    // Note: There may be security issues, please note
-    if (window.location.pathname !== '/user/login' && !redirect) {
-      history.replace({
-        pathname: '/user/login',
-        search: stringify({
-          redirect: pathname + search,
-        }),
+    const res = await outLogin({ user_id: initialState?.currentUser?.user_id });
+    if (res.code === 200) {
+      // 清空缓存信息
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      flushSync(() => {
+        setInitialState((s) => ({ ...s, currentUser: undefined }));
       });
+
+      const { search, pathname } = window.location;
+      const urlParams = new URL(window.location.href).searchParams;
+      /** 此方法会跳转到 redirect 参数所在的位置 */
+      const redirect = urlParams.get('redirect');
+      // Note: There may be security issues, please note
+      if (window.location.pathname !== '/user/login' && !redirect) {
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: pathname + search,
+          }),
+        });
+      }
     }
   };
   const actionClassName = useEmotionCss(({ token }) => {
@@ -62,13 +71,10 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     (event: MenuInfo) => {
       const { key } = event;
       if (key === 'logout') {
-        flushSync(() => {
-          setInitialState((s) => ({ ...s, currentUser: undefined }));
-        });
         loginOut();
         return;
       }
-      history.push(`/account/${key}`);
+      // history.push(`/account/${key}`);
     },
     [setInitialState],
   );
@@ -91,7 +97,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.user_name) {
     return loading;
   }
 

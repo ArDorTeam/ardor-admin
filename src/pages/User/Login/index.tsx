@@ -72,6 +72,9 @@ const Login: React.FC = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
+        // 将username和token存于localstorage
+        localStorage.setItem('username', values.email);
+        localStorage.setItem('token', res?.data?.access_token || '');
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
@@ -145,7 +148,7 @@ const Login: React.FC = () => {
             }}
             placeholder={intl.formatMessage({
               id: 'pages.login.username.placeholder',
-              defaultMessage: '用户名: admin or user',
+              defaultMessage: '用户名: 邮箱',
             })}
             rules={[
               {
@@ -167,7 +170,7 @@ const Login: React.FC = () => {
             }}
             placeholder={intl.formatMessage({
               id: 'pages.login.password.placeholder',
-              defaultMessage: '密码: ant.design',
+              defaultMessage: '密码',
             })}
             rules={[
               {

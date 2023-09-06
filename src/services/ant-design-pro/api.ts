@@ -3,11 +3,10 @@
 import { request } from '@umijs/max';
 
 /** 获取当前的用户 GET /api/currentUser */
-export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/currentUser', {
-    method: 'GET',
+export async function currentUser(body: { email: string }, options?: { [key: string]: any }) {
+  return request<API.CurrentUserResult>('/api/v1/users/getUser', {
+    method: 'POST',
+    data: body,
     ...(options || {}),
   });
 }
