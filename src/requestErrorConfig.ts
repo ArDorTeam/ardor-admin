@@ -92,7 +92,7 @@ export const errorConfig: RequestConfig = {
       // const url = config?.url?.concat('?token = 123');
       return {
         ...config,
-        headers: { ...config.headers, 'Breaer-Toekn': localStorage.getItem('token') },
+        headers: { ...config.headers, Authorization: 'Breaer ' + localStorage.getItem('token') },
       };
     },
   ],
