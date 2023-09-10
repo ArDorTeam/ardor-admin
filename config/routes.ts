@@ -23,7 +23,7 @@ export default [
       {
         name: 'register',
         path: '/user/register',
-        component: './Register',
+        component: './User/Register',
       },
     ],
   },
@@ -75,6 +75,22 @@ export default [
     ],
   },
   {
+    path: '/tag',
+    name: 'tag',
+    icon: 'tag',
+    routes: [
+      {
+        path: '/tag',
+        redirect: '/tag/list',
+      },
+      {
+        path: '/tag/list',
+        name: 'list',
+        component: './TagList',
+      },
+    ],
+  },
+  {
     path: '/userManage',
     name: 'userManage',
     icon: 'table',
@@ -87,15 +103,21 @@ export default [
     ],
   },
   {
-    path: '/about',
-    component: './About',
-    name: 'about',
-    icon: 'table',
-  },
-  {
     path: '/log',
     component: './Log',
     name: 'log',
+    icon: 'book',
+  },
+  {
+    path: 'personal',
+    name: 'personal',
+    icon: 'user',
+    component: './Personal',
+  },
+  {
+    path: '/about',
+    component: './About',
+    name: 'about',
     icon: 'table',
   },
   {

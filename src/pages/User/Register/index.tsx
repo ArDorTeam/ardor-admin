@@ -8,7 +8,7 @@ import { FormattedMessage, Helmet, history, SelectLang, useIntl } from '@umijs/m
 import { message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'umi';
-import Settings from '../../../config/defaultSettings';
+import Settings from '../../../../config/defaultSettings';
 
 const Lang = () => {
   const langClassName = useEmotionCss(({ token }) => {

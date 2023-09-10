@@ -23,7 +23,10 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const res = await queryCurrentUser({ email: localStorage.getItem('username') ?? '' });
+      const res = await queryCurrentUser(
+        { email: localStorage.getItem('username') ?? '' },
+        { skipErrorHandler: true },
+      );
       return res.data;
     } catch (error) {
       history.push(loginPath);
@@ -56,7 +59,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
       title: <AvatarName />,
       render: (_, avatarChildren) => {
-        return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+        return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;
       },
     },
     waterMarkProps: {
