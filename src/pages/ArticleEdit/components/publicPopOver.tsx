@@ -48,11 +48,14 @@ const normFile = (e: any) => {
   return e?.fileList;
 };
 
-const onFinish = (values: any) => {
-  console.log('Received values of form: ', values);
-};
-
-const PublicPopOver: React.FC = () => {
+const PublicPopOver: React.FC<{
+  onPublic: (param: {
+    category: string;
+    tag?: number[];
+    cover_url?: string;
+    sub_title?: string;
+  }) => void;
+}> = (props) => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
   const [tagArr] = useState<tags[]>([
@@ -76,11 +79,11 @@ const PublicPopOver: React.FC = () => {
       defaultMessage: 'public article',
     }),
     category: intl.formatMessage({
-      id: 'article.writing.popover.class',
+      id: 'article.writing.popover.category',
       defaultMessage: '分类',
     }),
     categoryRule: intl.formatMessage({
-      id: 'article.writing.popover.classRule',
+      id: 'article.writing.popover.categoryRule',
       defaultMessage: '请选择分类',
     }),
     tag: intl.formatMessage({
@@ -116,6 +119,12 @@ const PublicPopOver: React.FC = () => {
       defaultMessage: '取消',
     }),
   });
+
+  const onFinish = async (values: object) => {
+    console.log('Received values of form: ', values);
+    // const res = await addArticle(values)
+    props?.onPublic(values);
+  };
 
   const hide = () => {
     setOpen(false);
@@ -162,13 +171,13 @@ const PublicPopOver: React.FC = () => {
           <Form.Item
             name="tag"
             label={locals.tag}
-            rules={[
-              {
-                required: true,
-                message: locals.tagRule,
-                type: 'array',
-              },
-            ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: locals.tagRule,
+            //     type: 'array',
+            //   },
+            // ]}
           >
             <Select mode="multiple" placeholder={locals.tagRule} allowClear>
               {tagArr.map((item) => (
@@ -180,26 +189,30 @@ const PublicPopOver: React.FC = () => {
           </Form.Item>
 
           <Form.Item label={locals.cover}>
-            <Form.Item name="cover" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-              <Upload.Dragger name="file" action="/api/v1/upload">
+            <Form.Item
+              name="cover_url"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+              noStyle
+            >
+              <Upload name="file" action="/api/v1/upload" listType="picture-card" maxCount={1}>
                 <p className="ant-upload-drag-icon">
                   <PlusOutlined />
                 </p>
                 <p className="ant-upload-text">{locals.coverUploadText}</p>
-              </Upload.Dragger>
+              </Upload>
             </Form.Item>
           </Form.Item>
 
           <Form.Item
             label={locals.abstract}
-            name="abstract"
-            rules={[
-              {
-                required: true,
-                message: locals.abstractRule,
-                type: 'array',
-              },
-            ]}
+            name="sub_title"
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: locals.abstractRule,
+            //   },
+            // ]}
           >
             <TextArea placeholder={locals.abstractRule} showCount maxLength={100} />
           </Form.Item>

@@ -57,6 +57,15 @@ export async function getArticleList(
   });
 }
 
+/** 新增文章 POST /api/v1/addArticle */
+export async function addArticle(params: API.AddArticleParams, options?: { [key: string]: any }) {
+  return request<API.DefaultResult>('/api/v1/addArticle', {
+    method: 'POST',
+    data: { ...params },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>('/api/notices', {

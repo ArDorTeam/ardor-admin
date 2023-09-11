@@ -2,6 +2,12 @@
 /* eslint-disable */
 
 declare namespace API {
+  type DefaultResult = {
+    code: number;
+    data?: string | object;
+    msg: string;
+  };
+
   type CurrentUser = {
     user_id?: string;
     user_avatar?: string;
@@ -144,5 +150,14 @@ declare namespace API {
     is_recommend: string; // 是否置顶
     gmt_create: string; // 创建时间
     gmt_modified: string; // 更新时间
+  };
+
+  type AddArticleParams = {
+    title: string; // 文章标题
+    sub_title?: string; // 文章摘要
+    cover_url?: string; // 文章封面
+    content: string; // 文章内容
+    category?: string; // 分类
+    tag?: number[]; // 标签
   };
 }

@@ -1,8 +1,9 @@
+import { addArticle } from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
 import gfm from '@bytemd/plugin-gfm';
 import { Editor } from '@bytemd/react';
 import { useIntl } from '@umijs/max';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 import 'bytemd/dist/index.css';
 import zh_Hans from 'bytemd/locales/zh_Hans.json';
 import { useState } from 'react';
@@ -17,7 +18,8 @@ const plugins = [
 ];
 
 const App: React.FC = () => {
-  const [value, setValue] = useState('');
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
   const params = useParams();
   console.log('onCancel', params.id);
 
@@ -26,6 +28,26 @@ const App: React.FC = () => {
    * @zh-CN 国际化配置
    * */
   const intl = useIntl();
+
+  // 发布
+  const onPublic = async (params: {
+    category: string;
+    tag?: number[];
+    cover_url?: string;
+    sub_title?: string;
+  }) => {
+    if (!content || !title) {
+      message.warning(
+        intl.formatMessage({
+          id: 'article.writing.public.rule',
+          defaultMessage: '标题和内容必须要有!',
+        }),
+      );
+      return;
+    }
+    const res = await addArticle({ ...params, content, title });
+    console.log('res', res);
+  };
 
   return (
     <PageContainer
@@ -41,16 +63,18 @@ const App: React.FC = () => {
               defaultMessage: 'enter title',
             })}
             className={style['title-input']}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
-          <PublicPopOver></PublicPopOver>
+          <PublicPopOver onPublic={onPublic}></PublicPopOver>
         </div>
         <div className={style.editor}>
           <Editor
-            value={value}
+            value={content}
             plugins={plugins}
             locale={zh_Hans}
             onChange={(v) => {
-              setValue(v);
+              setContent(v);
             }}
           />
         </div>
