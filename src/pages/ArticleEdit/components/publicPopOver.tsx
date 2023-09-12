@@ -120,7 +120,12 @@ const PublicPopOver: React.FC<{
     }),
   });
 
-  const onFinish = async (values: object) => {
+  const onFinish = async (values: {
+    category: string;
+    tag?: number[];
+    cover_url?: string;
+    sub_title?: string;
+  }) => {
     console.log('Received values of form: ', values);
     // const res = await addArticle(values)
     props?.onPublic(values);

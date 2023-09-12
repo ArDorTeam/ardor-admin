@@ -123,6 +123,11 @@ declare namespace API {
 
   type ArticleListParams = PageParams & {
     title?: string;
+    gmt_create?: string[];
+    gmt_modified?: string[];
+    article_type?: stirng;
+    tags?: number[];
+    is_recommend?: number;
   };
 
   type PageSort = {

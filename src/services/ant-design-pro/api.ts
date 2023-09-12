@@ -50,9 +50,21 @@ export async function getArticleList(
   sort: API.PageSort,
   options?: { [key: string]: any },
 ) {
+  const { title, gmt_create, gmt_modified, current, pageSize, article_type, tags, is_recommend } =
+    params;
+  const paramsMap = {
+    searchValue: title,
+    createTime: gmt_create,
+    updateTime: gmt_modified,
+    article_type,
+    tags,
+    is_recommend,
+    offset: current,
+    length: pageSize,
+  };
   return request<API.ArticleList>('/api/v1/article/getArticleList', {
     method: 'POST',
-    data: { ...params, sort },
+    data: { ...paramsMap, sort },
     ...(options || {}),
   });
 }
