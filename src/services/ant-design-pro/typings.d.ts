@@ -3,9 +3,9 @@
 
 declare namespace API {
   type DefaultResult = {
-    code: number;
+    code?: number;
     data?: string | object;
-    msg: string;
+    message?: string;
   };
 
   type CurrentUser = {
@@ -135,9 +135,11 @@ declare namespace API {
   };
 
   type ArticleList = {
-    data?: ArticleListItem[];
+    data?: {
+      list?: ArticleListItem[];
+      total?: number;
+    };
     /** 列表的内容总数 */
-    total?: number;
     success?: boolean;
     code?: number;
     message?: string;
@@ -164,5 +166,9 @@ declare namespace API {
     content: string; // 文章内容
     category?: string; // 分类
     tag?: number[]; // 标签
+  };
+
+  type DeleteArticleParams = {
+    article_id: string;
   };
 }

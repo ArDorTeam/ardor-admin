@@ -62,16 +62,41 @@ export async function getArticleList(
     offset: current,
     length: pageSize,
   };
-  return request<API.ArticleList>('/api/v1/article/getArticleList', {
+  const res = await request<API.ArticleList>('/api/v1/article/getArticleList', {
     method: 'POST',
     data: { ...paramsMap, sort },
     ...(options || {}),
-  });
+  }).catch((e) => {});
+  if (res?.code === 200) {
+    return {
+      data: res?.data?.list || [],
+      success: true,
+      total: res?.data?.total,
+    };
+  } else {
+    return {
+      data: [],
+      success: false,
+      total: 0,
+    };
+  }
 }
 
 /** 新增文章 POST /api/v1/addArticle */
 export async function addArticle(params: API.AddArticleParams, options?: { [key: string]: any }) {
-  return request<API.DefaultResult>('/api/v1/addArticle', {
+  return request<API.DefaultResult>('/api/v1/article/addArticle', {
+    method: 'POST',
+    data: { ...params },
+    ...(options || {}),
+  });
+}
+
+/** 删除文章 POST /api/v1/deleteArticle */
+export async function deleteArticle(
+  params: API.DeleteArticleParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.DefaultResult>('/api/v1/article/deleteArticle', {
     method: 'POST',
     data: { ...params },
     ...(options || {}),

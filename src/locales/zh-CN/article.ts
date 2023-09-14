@@ -10,6 +10,7 @@ export default {
   'article.table.edit': '编辑',
   'article.table.delete': '删除',
   'article.table.writing': '写文章',
+  'article.table.delete.tips': '确定删除文章：',
   'article.writing.placeholder': '输入文章标题...',
   'article.writing.public': '发布',
   'article.writing.popover.title': '发布文章',
