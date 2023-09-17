@@ -127,7 +127,7 @@ declare namespace API {
     gmt_modified?: string[];
     article_type?: stirng;
     tags?: number[];
-    is_recommend?: number;
+    is_recommend?: boolean;
   };
 
   type PageSort = {
@@ -154,7 +154,7 @@ declare namespace API {
     cover_url?: string; // 封面图
     content?: string; // 文章内容
     visits: string; // 浏览次数
-    is_recommend: string; // 是否置顶
+    is_recommend: boolean; // 是否置顶
     gmt_create: string; // 创建时间
     gmt_modified: string; // 更新时间
   };
@@ -166,6 +166,16 @@ declare namespace API {
     content: string; // 文章内容
     category?: string; // 分类
     tag?: number[]; // 标签
+    is_recommend: boolean; // 是否置顶
+  };
+
+  type UpdateArticleParams = {
+    title: string; // 文章标题
+    sub_title?: string; // 文章摘要
+    cover_url?: string; // 文章封面
+    content: string; // 文章内容
+    is_recommend: boolean; // 是否置顶
+    article_id: string; // 文章id
   };
 
   type DeleteArticleParams = {

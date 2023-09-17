@@ -24,10 +24,12 @@ type locals = {
   tagRule: string;
   cover: string;
   coverUploadText: string;
+  coverRule: string;
   abstract: string;
   abstractRule: string;
   public: string;
   cancel: string;
+  recommend: string;
 };
 
 type tags = {
@@ -45,7 +47,7 @@ const normFile = (e: any) => {
   if (Array.isArray(e)) {
     return e;
   }
-  return e?.fileList;
+  return e?.file?.response?.data;
 };
 
 const PublicPopOver: React.FC<{
@@ -54,6 +56,7 @@ const PublicPopOver: React.FC<{
     tag?: number[];
     cover_url?: string;
     sub_title?: string;
+    is_recommend: boolean;
   }) => void;
 }> = (props) => {
   const intl = useIntl();
@@ -102,6 +105,10 @@ const PublicPopOver: React.FC<{
       id: 'article.writing.popover.coverUploadText',
       defaultMessage: '上传封面',
     }),
+    coverRule: intl.formatMessage({
+      id: 'article.writing.popover.cover.rule',
+      defaultMessage: '请上传封面!',
+    }),
     abstract: intl.formatMessage({
       id: 'article.writing.popover.abstract',
       defaultMessage: '编辑摘要',
@@ -118,6 +125,10 @@ const PublicPopOver: React.FC<{
       id: 'global.cancel',
       defaultMessage: '取消',
     }),
+    recommend: intl.formatMessage({
+      id: 'article.writing.popover.recommend',
+      defaultMessage: '是否置顶',
+    }),
   });
 
   const onFinish = async (values: {
@@ -125,6 +136,7 @@ const PublicPopOver: React.FC<{
     tag?: number[];
     cover_url?: string;
     sub_title?: string;
+    is_recommend: boolean;
   }) => {
     console.log('Received values of form: ', values);
     // const res = await addArticle(values)
@@ -156,6 +168,7 @@ const PublicPopOver: React.FC<{
             category: '前端',
             tag: [],
             abstract: '',
+            is_recommend: false,
           }}
           style={{ maxWidth: 500 }}
         >
@@ -193,33 +206,47 @@ const PublicPopOver: React.FC<{
             </Select>
           </Form.Item>
 
-          <Form.Item label={locals.cover}>
-            <Form.Item
-              name="cover_url"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              noStyle
-            >
-              <Upload name="file" action="/api/v1/upload" listType="picture-card" maxCount={1}>
-                <p className="ant-upload-drag-icon">
-                  <PlusOutlined />
-                </p>
-                <p className="ant-upload-text">{locals.coverUploadText}</p>
-              </Upload>
-            </Form.Item>
+          <Form.Item
+            label={locals.cover}
+            name="cover_url"
+            valuePropName="data"
+            getValueFromEvent={normFile}
+            rules={[
+              {
+                required: true,
+                message: locals.coverRule,
+                type: 'url',
+              },
+            ]}
+          >
+            <Upload name="file" action="/api/v1/upload" listType="picture-card" maxCount={1}>
+              <p className="ant-upload-drag-icon">
+                <PlusOutlined />
+              </p>
+              <p className="ant-upload-text">{locals.coverUploadText}</p>
+            </Upload>
           </Form.Item>
 
           <Form.Item
             label={locals.abstract}
             name="sub_title"
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: locals.abstractRule,
-            //   },
-            // ]}
+            rules={[
+              {
+                required: true,
+                message: locals.abstractRule,
+              },
+            ]}
           >
             <TextArea placeholder={locals.abstractRule} showCount maxLength={100} />
+          </Form.Item>
+
+          <Form.Item label={locals.recommend} name="is_recommend">
+            <Radio.Group
+              options={[
+                { label: '是', value: true },
+                { label: '否', value: false },
+              ]}
+            ></Radio.Group>
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 12, offset: 11 }}>

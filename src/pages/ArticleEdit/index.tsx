@@ -2,7 +2,7 @@ import { addArticle } from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
 import gfm from '@bytemd/plugin-gfm';
 import { Editor } from '@bytemd/react';
-import { useIntl } from '@umijs/max';
+import { history, useIntl } from '@umijs/max';
 import { Input, message } from 'antd';
 import 'bytemd/dist/index.css';
 import zh_Hans from 'bytemd/locales/zh_Hans.json';
@@ -18,6 +18,7 @@ const plugins = [
 ];
 
 const App: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
   const params = useParams();
@@ -35,9 +36,10 @@ const App: React.FC = () => {
     tag?: number[];
     cover_url?: string;
     sub_title?: string;
+    is_recommend: boolean;
   }) => {
     if (!content || !title) {
-      message.warning(
+      messageApi.warning(
         intl.formatMessage({
           id: 'article.writing.public.rule',
           defaultMessage: '标题和内容必须要有!',
@@ -45,8 +47,30 @@ const App: React.FC = () => {
       );
       return;
     }
-    const res = await addArticle({ ...params, content, title });
-    console.log('res', res);
+    try {
+      const res = await addArticle({
+        ...params,
+        content,
+        title,
+        category: undefined,
+        tag: undefined,
+      });
+      if (res.code === 200) {
+        messageApi.success(
+          intl.formatMessage({
+            id: 'article.writing.public.success',
+            defaultMessage: '发布成功!',
+          }),
+        );
+        setTimeout(() => {
+          history.push('/article');
+        }, 500);
+      } else {
+        messageApi.warning(res.message);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -55,6 +79,7 @@ const App: React.FC = () => {
         title: '文章编辑',
       }}
     >
+      {contextHolder}
       <div className={style['article-writing-container']}>
         <div className={style.header}>
           <Input

@@ -20,8 +20,11 @@ export default {
   'article.writing.popover.tagRule': '请选择标签',
   'article.writing.popover.cover': '封面',
   'article.writing.popover.coverUploadText': '上传封面',
+  'article.writing.popover.cover.rule': '请上传封面!',
   'article.writing.popover.abstract': '编辑摘要',
   'article.writing.popover.abstractRule': '请填写编辑摘要',
+  'article.writing.popover.recommend': '是否置顶',
   'article.writing.popover.public': '确定并发布',
   'article.writing.public.rule': '标题和内容必须要有!',
+  'article.writing.public.success': '发布成功!',
 };

@@ -25,9 +25,9 @@ const tagOption: { label: string; value: number }[] = [
   { label: '性能优化', value: 2 },
   { label: '架构', value: 3 },
 ];
-const isTopOption: { label: string; value: number }[] = [
-  { label: '是', value: 1 },
-  { label: '否', value: 0 },
+const isTopOption: { label: string; value: boolean }[] = [
+  { label: '是', value: true },
+  { label: '否', value: false },
 ];
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();

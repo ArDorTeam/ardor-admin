@@ -64,7 +64,7 @@ export async function getArticleList(
   };
   const res = await request<API.ArticleList>('/api/v1/article/getArticleList', {
     method: 'POST',
-    data: { ...paramsMap, sort },
+    data: { ...paramsMap, sort: Object.keys(sort).length > 0 ? sort : undefined },
     ...(options || {}),
   }).catch((e) => {});
   if (res?.code === 200) {
@@ -85,6 +85,18 @@ export async function getArticleList(
 /** 新增文章 POST /api/v1/addArticle */
 export async function addArticle(params: API.AddArticleParams, options?: { [key: string]: any }) {
   return request<API.DefaultResult>('/api/v1/article/addArticle', {
+    method: 'POST',
+    data: { ...params },
+    ...(options || {}),
+  });
+}
+
+/** 编辑文章 POST /api/v1/updateArticle */
+export async function updateArticle(
+  params: API.UpdateArticleParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.DefaultResult>('/api/v1/article/updateArticle', {
     method: 'POST',
     data: { ...params },
     ...(options || {}),
