@@ -13,7 +13,7 @@ export async function currentUser(body: { email: string }, options?: { [key: str
 
 /** 退出登录接口 POST /api/v1/auth/logout */
 export async function outLogin(body: API.LogoutParams, options?: { [key: string]: any }) {
-  return request<API.LogoutResult>('/api/v1/auth/logout', {
+  return request<API.DefaultResult>('/api/v1/auth/logout', {
     method: 'POST',
     data: body,
     ...(options || {}),
@@ -80,6 +80,18 @@ export async function getArticleList(
       total: 0,
     };
   }
+}
+
+/** 获取文章详情 POST /api/v1/addArticle */
+export async function getArticleDetail(
+  params: API.getArticleParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.getArticleResult>('/api/v1/article/getArticleDetail', {
+    method: 'POST',
+    data: { ...params },
+    ...(options || {}),
+  });
 }
 
 /** 新增文章 POST /api/v1/addArticle */

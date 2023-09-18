@@ -19,10 +19,8 @@ declare namespace API {
     email?: string;
   };
 
-  type CurrentUserResult = {
-    code: number;
+  type CurrentUserResult = DefaultResult & {
     data?: CurrentUser;
-    msg: string;
   };
 
   type PageParams = {
@@ -88,10 +86,8 @@ declare namespace API {
     type?: NoticeIconItemType;
   };
 
-  type LoginResult = {
-    code?: number;
+  type LoginResult = DefaultResult & {
     data?: { access_token?: string; refresh_token?: string };
-    msg?: string;
   };
 
   type LoginParams = {
@@ -105,20 +101,12 @@ declare namespace API {
     captcha: string;
   };
 
-  type RegisterResult = {
-    code?: number;
+  type RegisterResult = DefaultResult & {
     data?: { tokens: string };
-    msg?: string;
   };
 
   type LogoutParams = {
     user_id?: string;
-  };
-
-  type LogoutResult = {
-    code?: number;
-    data?: object;
-    msg?: string;
   };
 
   type ArticleListParams = PageParams & {
@@ -176,6 +164,24 @@ declare namespace API {
     content: string; // 文章内容
     is_recommend: boolean; // 是否置顶
     article_id: string; // 文章id
+  };
+
+  type getArticleParams = {
+    article_id: string;
+  };
+
+  type getArticleResult = DefaultResult & {
+    data: {
+      id: string; // 主键id
+      article_id: string; // 文章id
+      article_type?: string; // 文章类型
+      title: string; // 文章标题
+      sub_title?: string; // 文章摘要
+      cover_url?: string; // 文章封面
+      content: string; // 文章内容
+      visits?: string; // 浏览次数
+      is_recommend: boolean; // 是否置顶
+    };
   };
 
   type DeleteArticleParams = {

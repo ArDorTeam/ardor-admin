@@ -58,6 +58,17 @@ const PublicPopOver: React.FC<{
     sub_title?: string;
     is_recommend: boolean;
   }) => void;
+  popoverParams: {
+    id?: string; // 主键id
+    article_id?: string; // 文章id
+    article_type?: string; // 文章类型
+    title?: string; // 文章标题
+    sub_title?: string; // 文章摘要
+    cover_url?: string; // 文章封面
+    content?: string; // 文章内容
+    visits?: string; // 浏览次数
+    is_recommend?: boolean; // 是否置顶
+  };
 }> = (props) => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
@@ -167,8 +178,9 @@ const PublicPopOver: React.FC<{
           initialValues={{
             category: '前端',
             tag: [],
-            abstract: '',
-            is_recommend: false,
+            sub_title: props?.popoverParams?.sub_title,
+            is_recommend: props?.popoverParams?.is_recommend,
+            cover_url: props?.popoverParams?.cover_url,
           }}
           style={{ maxWidth: 500 }}
         >
@@ -219,7 +231,24 @@ const PublicPopOver: React.FC<{
               },
             ]}
           >
-            <Upload name="file" action="/api/v1/upload" listType="picture-card" maxCount={1}>
+            <Upload
+              name="file"
+              action="/api/v1/upload"
+              listType="picture-card"
+              maxCount={1}
+              fileList={
+                props?.popoverParams?.cover_url
+                  ? [
+                      {
+                        uid: '-1',
+                        name: 'image.png',
+                        status: 'done',
+                        url: props?.popoverParams?.cover_url,
+                      },
+                    ]
+                  : []
+              }
+            >
               <p className="ant-upload-drag-icon">
                 <PlusOutlined />
               </p>
