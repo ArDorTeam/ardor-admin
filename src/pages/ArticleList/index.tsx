@@ -81,9 +81,9 @@ const TableList: React.FC = () => {
         options: isTopOption,
         dataindex: 'searchValue',
       },
-      render: (dom) => {
-        return <a>{dom}</a>;
-      },
+      // render: (dom) => {
+      //   return <a>{dom}</a>;
+      // },
     },
     {
       title: (

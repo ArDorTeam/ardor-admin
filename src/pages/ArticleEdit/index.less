@@ -1,10 +1,10 @@
 .article-writing-container {
   background: #fff;
-  > .header {
+  .header {
     display: flex;
     justify-content: space-between;
     padding: 8px 8px 8px 0;
-    > .title-input {
+    .title-input {
       flex: 1;
       margin-right: 10px;
       border: none !important;
@@ -14,14 +14,17 @@
     }
   }
 
-  > .editor {
+  .editor {
     z-index: 10000;
     height: 100%;
+    :global(.bytemd-split) {
+      height: calc(100vh - 156px);
+    }
   }
 }
 
 .article-public-form {
-  > .ant-popover-title {
+  .ant-popover-title {
     position: relative;
     &::after {
       position: absolute;
@@ -30,6 +33,19 @@
       height: 1px;
       background-color: #e5e6eb;
       content: '';
+    }
+  }
+  .public-form-radio {
+    :global(.ant-radio-button-wrapper) {
+      margin-bottom: 2px;
+      &:first-child {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+      }
+      &:last-child {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+      }
     }
   }
 }

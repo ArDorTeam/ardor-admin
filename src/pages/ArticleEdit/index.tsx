@@ -1,19 +1,38 @@
 import { addArticle, getArticleDetail, updateArticle } from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
-import gfm from '@bytemd/plugin-gfm';
 import { Editor } from '@bytemd/react';
 import { history, useIntl } from '@umijs/max';
 import { Input, message, Spin } from 'antd';
-import 'bytemd/dist/index.css';
-import zh_Hans from 'bytemd/locales/zh_Hans.json';
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'umi';
+
+import breaks from '@bytemd/plugin-breaks';
+// import footnotes from '@bytemd/plugin-footnotes';
+import '@/bytemd.css';
+import frontmatter from '@bytemd/plugin-frontmatter';
+import gemoji from '@bytemd/plugin-gemoji';
+import gfm from '@bytemd/plugin-gfm';
+import gfmLocale from '@bytemd/plugin-gfm/locales/zh_Hans.json';
+import highlight from '@bytemd/plugin-highlight';
+import mediumZoom from '@bytemd/plugin-medium-zoom';
+import mermaid from '@bytemd/plugin-mermaid';
+import mermaidLocale from '@bytemd/plugin-mermaid/locales/zh_Hans.json';
+import 'bytemd/dist/index.css';
+import zh_Hans from 'bytemd/locales/zh_Hans.json';
 
 import PublicPopOver from './components/PublicPopOver';
 import style from './index.less';
 
 const plugins = [
-  gfm(),
+  gfm({ locale: gfmLocale }),
+  breaks(),
+  highlight(),
+  mermaid({ locale: mermaidLocale }),
+  frontmatter(),
+  // footnotes(),
+  gemoji(),
+  mediumZoom(),
   // Add more plugins here
 ];
 
@@ -94,6 +113,15 @@ const App: React.FC = () => {
     }
   };
 
+  // editor上传图片
+  const handleUploadImages = async (files: File[]) => {
+    console.log('handleUploadImages', files);
+    return files.map((i) => ({
+      title: i.name,
+      url: '/api/v1/upload',
+    }));
+  };
+
   useEffect(() => {
     if (params.id !== 'new') getArticle();
   }, []);
@@ -123,11 +151,19 @@ const App: React.FC = () => {
             <Editor
               value={content}
               plugins={plugins}
+              uploadImages={handleUploadImages}
               locale={zh_Hans}
               onChange={(v) => {
                 setContent(v);
               }}
             />
+            {/* <Viewer
+              tabindex="2"
+              sanitize="23"
+              value={content}
+              plugins={plugins}
+              locale={zh_Hans}
+            /> */}
           </div>
         </div>
       </Spin>

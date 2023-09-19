@@ -39,7 +39,7 @@ type tags = {
 
 const formItemLayout = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 15 },
+  wrapperCol: { span: 19 },
 };
 
 const normFile = (e: any) => {
@@ -179,7 +179,7 @@ const PublicPopOver: React.FC<{
             category: '前端',
             tag: [],
             sub_title: props?.popoverParams?.sub_title,
-            is_recommend: props?.popoverParams?.is_recommend,
+            is_recommend: props?.popoverParams?.is_recommend || false,
             cover_url: props?.popoverParams?.cover_url,
           }}
           style={{ maxWidth: 500 }}
@@ -189,7 +189,7 @@ const PublicPopOver: React.FC<{
             label={locals.category}
             rules={[{ required: true, message: locals.categoryRule }]}
           >
-            <Radio.Group>
+            <Radio.Group rootClassName={style['public-form-radio']}>
               {categoryArr.map((item) => (
                 <Radio.Button value={item} key={item}>
                   {item}
@@ -236,7 +236,7 @@ const PublicPopOver: React.FC<{
               action="/api/v1/upload"
               listType="picture-card"
               maxCount={1}
-              fileList={
+              defaultFileList={
                 props?.popoverParams?.cover_url
                   ? [
                       {
