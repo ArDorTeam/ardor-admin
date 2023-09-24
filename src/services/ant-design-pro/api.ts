@@ -2,9 +2,18 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取当前的用户 GET /api/currentUser */
+/** 获取当前的用户信息 POST /api/currentUser */
 export async function currentUser(body: { email: string }, options?: { [key: string]: any }) {
   return request<API.CurrentUserResult>('/api/v1/users/getUser', {
+    method: 'POST',
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 更新当前的用户信息 POST /api/currentUser */
+export async function updateUser(body: API.CurrentUser, options?: { [key: string]: any }) {
+  return request<API.CurrentUserResult>('/api/v1/users//updateUser', {
     method: 'POST',
     data: body,
     ...(options || {}),
