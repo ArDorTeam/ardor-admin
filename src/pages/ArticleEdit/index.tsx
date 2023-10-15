@@ -1,4 +1,4 @@
-import { addArticle, getArticleDetail, updateArticle } from '@/services/ant-design-pro/api';
+import { addArticle, getArticleDetail, updateArticle, upload } from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
 import { Editor } from '@bytemd/react';
 import { history, useIntl } from '@umijs/max';
@@ -115,11 +115,21 @@ const App: React.FC = () => {
 
   // editor上传图片
   const handleUploadImages = async (files: File[]) => {
-    console.log('handleUploadImages', files);
-    return files.map((i) => ({
-      title: i.name,
-      url: '/api/v1/upload',
-    }));
+    const fileRes: string[] = [];
+    for (const file of files) {
+      const res = await upload({ file }).catch(() => {});
+      if (res && res.code === 200) {
+        fileRes.push(res.data as string);
+      } else {
+        break;
+      }
+    }
+    return files
+      .filter((item, key) => fileRes[key])
+      .map((item, key) => ({
+        title: item.name,
+        url: fileRes[key],
+      }));
   };
 
   useEffect(() => {

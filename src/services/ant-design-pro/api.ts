@@ -136,6 +136,16 @@ export async function deleteArticle(
   });
 }
 
+/** 上传文件 POST /api/v1/upload */
+export async function upload(params: { file: File }, options?: { [key: string]: any }) {
+  return request<API.DefaultResult>('/api/v1/upload', {
+    method: 'POST',
+    data: { ...params },
+    headers: { 'Content-Type': 'multipart/form-data' },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>('/api/notices', {
