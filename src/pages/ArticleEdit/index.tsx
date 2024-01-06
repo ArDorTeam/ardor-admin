@@ -21,7 +21,7 @@ import mermaidLocale from '@bytemd/plugin-mermaid/locales/zh_Hans.json';
 import 'bytemd/dist/index.css';
 import zh_Hans from 'bytemd/locales/zh_Hans.json';
 
-import PublicPopOver from './components/PublicPopOver';
+import PublicPopOver from './components/publicPopOver';
 import style from './index.less';
 
 const plugins = [
