@@ -62,9 +62,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;
       },
     },
-    waterMarkProps: {
-      content: initialState?.currentUser?.user_name,
-    },
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.user_name,
+    // },
     footerRender: () => <Footer />,
     // 页面切换时触发
     onPageChange: () => {
