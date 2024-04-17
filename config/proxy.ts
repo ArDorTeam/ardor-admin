@@ -16,7 +16,8 @@ export default {
     '/api/': {
       // 要代理的地址
       // target: 'http://192.168.1.3:8070',
-      target: 'http://110.42.234.194',
+      // target: 'http://110.42.234.194',
+      target: 'http://172.18.17.204:8070',
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,

@@ -187,4 +187,12 @@ declare namespace API {
   type DeleteArticleParams = {
     article_id: string;
   };
+
+  type CategoryListItem = {
+    id: string; // 主键id
+    category_id: string; // 分类id
+    title: string; // 分类标题
+    gmt_create: string; // 创建时间
+    gmt_modified: string; // 更新时间
+  };
 }

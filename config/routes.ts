@@ -75,6 +75,22 @@ export default [
     ],
   },
   {
+    path: '/category',
+    name: 'category',
+    icon: 'table',
+    routes: [
+      {
+        path: '/category',
+        redirect: '/category/list',
+      },
+      {
+        path: '/category/list',
+        name: 'list',
+        component: './Category',
+      },
+    ],
+  },
+  {
     path: '/tag',
     name: 'tag',
     icon: 'tag',

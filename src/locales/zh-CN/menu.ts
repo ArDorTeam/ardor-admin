@@ -51,6 +51,8 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.article': '文章',
   'menu.article.list': '文章列表',
+  'menu.category': '文章分类',
+  'menu.category.list': '分类列表',
   'menu.tag': '标签',
   'menu.tag.list': '标签列表',
   'menu.userManage': '用户管理',

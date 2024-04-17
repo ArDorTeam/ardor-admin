@@ -136,6 +136,27 @@ export async function deleteArticle(
   });
 }
 
+/** 获取分类列表 POST /api/v1/category/getCategoryList */
+export async function getCategoryList() {
+  const res = await request<API.ArticleList>('/api/v1/category/getCategoryList', {
+    method: 'POST',
+    data: {},
+  }).catch((e) => {});
+  if (res?.code === 200) {
+    return {
+      data: res?.data?.list || [],
+      success: true,
+      total: res?.data?.total,
+    };
+  } else {
+    return {
+      data: [],
+      success: false,
+      total: 0,
+    };
+  }
+}
+
 /** 上传文件 POST /api/v1/upload */
 export async function upload(params: { file: File }, options?: { [key: string]: any }) {
   return request<API.DefaultResult>('/api/v1/upload', {

@@ -1,24 +1,24 @@
-import { deleteArticle, getArticleList, getCategoryList } from '@/services/ant-design-pro/api';
+import { deleteArticle, getCategoryList } from '@/services/ant-design-pro/api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, DatePicker, message, Modal } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import { DatePicker, message, Modal } from 'antd';
+import React, { useRef } from 'react';
 import { Link } from 'umi';
 
 const { RangePicker } = DatePicker;
 // 分类选项
-// const categoryOption: string[] = [
-//   '前端',
-//   '后端',
-//   'Android',
-//   'IOS',
-//   '人工智能',
-//   '开发工具',
-//   '代码人生',
-//   '阅读',
-// ];
+const categoryOption: string[] = [
+  '前端',
+  '后端',
+  'Android',
+  'IOS',
+  '人工智能',
+  '开发工具',
+  '代码人生',
+  '阅读',
+];
 // tag选项暂时写死
 const tagOption: { label: string; value: number }[] = [
   { label: '算法', value: 1 },
@@ -29,46 +29,35 @@ const isTopOption: { label: string; value: boolean }[] = [
   { label: '是', value: true },
   { label: '否', value: false },
 ];
-
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const intl = useIntl();
   const [messageApi] = message.useMessage();
   // const [modal, contextHolder] = Modal.useModal();
-  const [categoryOption, setCategoryOption] = useState([]);
-  const getCategory = async () => {
-    setCategoryOption([]);
-    const { data } = await getCategoryList();
-    setCategoryOption(data.map((item: API.CategoryListItem) => item.title));
-  };
-
-  useEffect(() => {
-    getCategory();
-  }, []);
 
   const handleDeleteArticle = async ({
-    article_id,
+    category_id,
     title,
   }: {
-    article_id: string;
+    category_id: string;
     title: string;
   }) => {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       title: intl.formatMessage({
-        id: 'article.table.delete',
+        id: 'category.table.delete',
         defaultMessage: '删除',
       }),
       content:
         intl.formatMessage({
-          id: 'article.table.delete.tips',
+          id: 'category.table.delete.tips',
           defaultMessage: '确定删除文章：',
         }) +
         title +
         '?',
       async onOk() {
         try {
-          const { code, message } = await deleteArticle({ article_id });
+          const { code, message } = await deleteArticle({ category_id });
           if (code === 200) {
             messageApi.open({
               type: 'success',
@@ -84,9 +73,9 @@ const TableList: React.FC = () => {
     });
   };
 
-  const columns: ProColumns<API.ArticleListItem>[] = [
+  const columns: ProColumns<API.CategoryListItem>[] = [
     {
-      title: <FormattedMessage id="article.table.title" defaultMessage="title" />,
+      title: <FormattedMessage id="category.table.title" defaultMessage="title" />,
       dataIndex: 'title',
       fieldProps: {
         options: isTopOption,
@@ -98,7 +87,7 @@ const TableList: React.FC = () => {
     },
     {
       title: (
-        <FormattedMessage id="article.table.createTime" defaultMessage="article create time" />
+        <FormattedMessage id="category.table.createTime" defaultMessage="category create time" />
       ),
       dataIndex: 'gmt_create',
       valueType: 'date',
@@ -107,7 +96,7 @@ const TableList: React.FC = () => {
     },
     {
       title: (
-        <FormattedMessage id="article.table.updateTime" defaultMessage="article update time" />
+        <FormattedMessage id="category.table.updateTime" defaultMessage="category update time" />
       ),
       dataIndex: 'gmt_modified',
       valueType: 'date',
@@ -116,13 +105,13 @@ const TableList: React.FC = () => {
       renderFormItem: () => <RangePicker />,
     },
     {
-      title: <FormattedMessage id="article.table.pageView" defaultMessage="Status" />,
+      title: <FormattedMessage id="category.table.pageView" defaultMessage="Status" />,
       dataIndex: 'visits',
       hideInSearch: true,
       hideInForm: true,
     },
     {
-      title: <FormattedMessage id="article.table.category" defaultMessage="article category" />,
+      title: <FormattedMessage id="category.table.category" defaultMessage="category category" />,
       dataIndex: 'article_type',
       valueType: 'select',
       fieldProps: {
@@ -130,7 +119,7 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="article.table.tags" defaultMessage="article tags" />,
+      title: <FormattedMessage id="category.table.tags" defaultMessage="category tags" />,
       dataIndex: 'tags',
       valueType: 'select',
       fieldProps: {
@@ -139,7 +128,7 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="article.table.top" defaultMessage="article is top" />,
+      title: <FormattedMessage id="category.table.top" defaultMessage="category is top" />,
       dataIndex: 'is_recommend',
       valueType: 'select',
       fieldProps: {
@@ -147,15 +136,15 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="article.table.option" defaultMessage="Operating" />,
+      title: <FormattedMessage id="category.table.option" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (text, record) => [
-        <Link key="config" to={`/article/edit/${record.article_id}`} target="_blank">
-          <FormattedMessage id="article.table.edit" defaultMessage="Configuration" />
+        <Link key="config" to={`/category/edit/${record.category_id}`} target="_blank">
+          <FormattedMessage id="category.table.edit" defaultMessage="Configuration" />
         </Link>,
         <a key="delete" onClick={() => handleDeleteArticle(record)}>
-          <FormattedMessage id="article.table.delete" defaultMessage="Subscribe to alerts" />
+          <FormattedMessage id="category.table.delete" defaultMessage="Subscribe to alerts" />
         </a>,
       ],
     },
@@ -163,21 +152,14 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.ArticleListItem, API.PageParams>
+      <ProTable<API.CategoryListItem, API.PageParams>
         actionRef={actionRef}
         rowKey="id"
         search={{
           labelWidth: 120,
           defaultCollapsed: false,
         }}
-        toolBarRender={() => [
-          <Button type="primary" key="primary">
-            <Link key="config" to="/article/edit/new" target="_blank">
-              <FormattedMessage id="article.table.writing" defaultMessage="writing" />
-            </Link>
-          </Button>,
-        ]}
-        request={getArticleList}
+        request={getCategoryList}
         columns={columns}
       />
     </PageContainer>
