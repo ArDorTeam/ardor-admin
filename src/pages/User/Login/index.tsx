@@ -3,8 +3,8 @@ import { login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { message, Tabs } from 'antd';
+import { FormattedMessage, Helmet, SelectLang, history, useIntl, useModel } from '@umijs/max';
+import { Tabs, message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Link } from 'umi';
@@ -85,10 +85,10 @@ const Login: React.FC = () => {
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
+        defaultMessage: '账号或密码错误，请重试！',
       });
       console.log(error);
-      message.error(defaultLoginFailureMessage + error);
+      message.error(defaultLoginFailureMessage);
     }
   };
 
