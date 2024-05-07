@@ -52,23 +52,14 @@ const normFile = (e: any) => {
 
 const PublicPopOver: React.FC<{
   onPublic: (param: {
-    category: string;
+    category_id: string;
     tag?: number[];
     cover_url?: string;
     sub_title?: string;
     is_recommend: boolean;
   }) => void;
-  popoverParams: {
-    id?: string; // 主键id
-    article_id?: string; // 文章id
-    article_type?: string; // 文章类型
-    title?: string; // 文章标题
-    sub_title?: string; // 文章摘要
-    cover_url?: string; // 文章封面
-    content?: string; // 文章内容
-    visits?: string; // 浏览次数
-    is_recommend?: boolean; // 是否置顶
-  };
+  popoverParams: API.getArticleResultData;
+  category: API.CategoryListItem[];
 }> = (props) => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
@@ -77,16 +68,16 @@ const PublicPopOver: React.FC<{
     { name: '性能优化', value: 2 },
     { name: '架构', value: 3 },
   ]);
-  const [categoryArr] = useState<string[]>([
-    '前端',
-    '后端',
-    'Android',
-    'IOS',
-    '人工智能',
-    '开发工具',
-    '代码人生',
-    '阅读',
-  ]);
+  // const [categoryArr] = useState<string[]>([
+  //   '前端',
+  //   '后端',
+  //   'Android',
+  //   'IOS',
+  //   '人工智能',
+  //   '开发工具',
+  //   '代码人生',
+  //   '阅读',
+  // ]);
   const [locals] = useState<locals>({
     title: intl.formatMessage({
       id: 'article.writing.popover.title',
@@ -143,7 +134,7 @@ const PublicPopOver: React.FC<{
   });
 
   const onFinish = async (values: {
-    category: string;
+    category_id: string;
     tag?: number[];
     cover_url?: string;
     sub_title?: string;
@@ -176,7 +167,7 @@ const PublicPopOver: React.FC<{
           {...formItemLayout}
           onFinish={onFinish}
           initialValues={{
-            category: '前端',
+            category_id: '',
             tag: [],
             sub_title: props?.popoverParams?.sub_title,
             is_recommend: props?.popoverParams?.is_recommend || false,
@@ -185,14 +176,14 @@ const PublicPopOver: React.FC<{
           style={{ maxWidth: 500 }}
         >
           <Form.Item
-            name="category"
+            name="category_id"
             label={locals.category}
             rules={[{ required: true, message: locals.categoryRule }]}
           >
             <Radio.Group rootClassName={style['public-form-radio']}>
-              {categoryArr.map((item) => (
-                <Radio.Button value={item} key={item}>
-                  {item}
+              {props?.category.map(({ category_id, title }) => (
+                <Radio.Button value={category_id} key={category_id}>
+                  {title}
                 </Radio.Button>
               ))}
             </Radio.Group>

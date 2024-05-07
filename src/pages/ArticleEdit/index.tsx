@@ -1,4 +1,10 @@
-import { addArticle, getArticleDetail, updateArticle, upload } from '@/services/ant-design-pro/api';
+import {
+  addArticle,
+  getArticleDetail,
+  getCategoryList,
+  updateArticle,
+  upload,
+} from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
 import { Editor } from '@bytemd/react';
 import { history, useIntl } from '@umijs/max';
@@ -40,8 +46,14 @@ const App: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [popoverParams, setPopoverParams] = useState({ article_id: '' });
+  const [popoverParams, setPopoverParams] = useState({
+    id: '',
+    article_id: '',
+    title: '',
+    content: '',
+  });
   const [spinning, setSpinning] = useState(false);
+  const [category, setCategory] = useState<API.CategoryListItem[]>([]);
   const params = useParams();
 
   /**
@@ -65,6 +77,18 @@ const App: React.FC = () => {
     } finally {
       setSpinning(false);
     }
+  };
+
+  // 获取分类列表
+  const getCategory = async () => {
+    try {
+      const { code, data, message } = await getCategoryList();
+      if (code === 200) {
+        setCategory(data);
+      } else {
+        messageApi.warning(message);
+      }
+    } catch (e) {}
   };
 
   // 发布或编辑
@@ -134,6 +158,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (params.id !== 'new') getArticle();
+    getCategory();
   }, []);
 
   return (
@@ -155,7 +180,11 @@ const App: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <PublicPopOver onPublic={onPublic} popoverParams={popoverParams}></PublicPopOver>
+            <PublicPopOver
+              onPublic={onPublic}
+              popoverParams={popoverParams}
+              category={category}
+            ></PublicPopOver>
           </div>
           <div className={style.editor}>
             <Editor

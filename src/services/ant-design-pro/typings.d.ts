@@ -171,21 +171,34 @@ declare namespace API {
   };
 
   type getArticleResult = DefaultResult & {
-    data: {
-      id: string; // 主键id
-      article_id: string; // 文章id
-      article_type?: string; // 文章类型
-      title: string; // 文章标题
-      sub_title?: string; // 文章摘要
-      cover_url?: string; // 文章封面
-      content: string; // 文章内容
-      visits?: string; // 浏览次数
-      is_recommend: boolean; // 是否置顶
-    };
+    data: getArticleResultData;
+  };
+
+  type getArticleResultData = {
+    id: string; // 主键id
+    article_id: string; // 文章id
+    article_type?: string; // 文章类型
+    title: string; // 文章标题
+    sub_title?: string; // 文章摘要
+    cover_url?: string; // 文章封面
+    content: string; // 文章内容
+    visits?: string; // 浏览次数
+    is_recommend?: boolean; // 是否置顶
   };
 
   type DeleteArticleParams = {
     article_id: string;
+  };
+
+  type CategoryList = {
+    data?: {
+      list?: CategoryListItem[];
+      total?: number;
+    };
+    /** 列表的内容总数 */
+    success?: boolean;
+    code?: number;
+    message?: string;
   };
 
   type CategoryListItem = {

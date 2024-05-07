@@ -35,7 +35,7 @@ const TableList: React.FC = () => {
   const intl = useIntl();
   const [messageApi] = message.useMessage();
   // const [modal, contextHolder] = Modal.useModal();
-  const [categoryOption, setCategoryOption] = useState([]);
+  const [categoryOption, setCategoryOption] = useState<string[]>([]);
   const getCategory = async () => {
     setCategoryOption([]);
     const { data } = await getCategoryList();

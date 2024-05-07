@@ -138,7 +138,7 @@ export async function deleteArticle(
 
 /** 获取分类列表 POST /api/v1/category/getCategoryList */
 export async function getCategoryList() {
-  const res = await request<API.ArticleList>('/api/v1/category/getCategoryList', {
+  const res = await request<API.CategoryList>('/api/v1/category/getCategoryList', {
     method: 'POST',
     data: {},
   }).catch((e) => {});
@@ -147,6 +147,8 @@ export async function getCategoryList() {
       data: res?.data?.list || [],
       success: true,
       total: res?.data?.total,
+      message: res.message,
+      code: res.code,
     };
   } else {
     return {
