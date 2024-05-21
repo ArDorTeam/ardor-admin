@@ -1,4 +1,9 @@
-import { deleteArticle, getArticleList, getCategoryList } from '@/services/ant-design-pro/api';
+import {
+  deleteArticle,
+  getArticleList,
+  getCategoryList,
+  getTagList,
+} from '@/services/ant-design-pro/api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
@@ -36,14 +41,21 @@ const TableList: React.FC = () => {
   const [messageApi] = message.useMessage();
   // const [modal, contextHolder] = Modal.useModal();
   const [categoryOption, setCategoryOption] = useState<string[]>([]);
+  const [tagOption, setTagOption] = useState<string[]>([]);
   const getCategory = async () => {
     setCategoryOption([]);
     const { data } = await getCategoryList();
     setCategoryOption(data.map((item: API.CategoryListItem) => item.title));
   };
 
+  const getTag = async () => {
+    setTagOption([]);
+    const { data } = await getTagList();
+    setTagOption(data.map((item: API.TagListItem) => item.tag_name));
+  };
   useEffect(() => {
     getCategory();
+    getTag();
   }, []);
 
   const handleDeleteArticle = async ({

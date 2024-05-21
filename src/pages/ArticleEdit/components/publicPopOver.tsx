@@ -20,7 +20,7 @@ type locals = {
   title: string;
   category: string;
   categoryRule: string;
-  tag: string;
+  tags: string;
   tagRule: string;
   cover: string;
   coverUploadText: string;
@@ -60,24 +60,10 @@ const PublicPopOver: React.FC<{
   }) => void;
   popoverParams: API.getArticleResultData;
   category: API.CategoryListItem[];
+  tag: API.TagListItem[];
 }> = (props) => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const [tagArr] = useState<tags[]>([
-    { name: '算法', value: 1 },
-    { name: '性能优化', value: 2 },
-    { name: '架构', value: 3 },
-  ]);
-  // const [categoryArr] = useState<string[]>([
-  //   '前端',
-  //   '后端',
-  //   'Android',
-  //   'IOS',
-  //   '人工智能',
-  //   '开发工具',
-  //   '代码人生',
-  //   '阅读',
-  // ]);
   const [locals] = useState<locals>({
     title: intl.formatMessage({
       id: 'article.writing.popover.title',
@@ -91,7 +77,7 @@ const PublicPopOver: React.FC<{
       id: 'article.writing.popover.categoryRule',
       defaultMessage: '请选择分类',
     }),
-    tag: intl.formatMessage({
+    tags: intl.formatMessage({
       id: 'article.writing.popover.tag',
       defaultMessage: '添加标签',
     }),
@@ -135,7 +121,7 @@ const PublicPopOver: React.FC<{
 
   const onFinish = async (values: {
     category_id: string;
-    tag?: number[];
+    tags?: string[];
     cover_url?: string;
     sub_title?: string;
     is_recommend: boolean;
@@ -189,21 +175,11 @@ const PublicPopOver: React.FC<{
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item
-            name="tag"
-            label={locals.tag}
-            // rules={[
-            //   {
-            //     required: true,
-            //     message: locals.tagRule,
-            //     type: 'array',
-            //   },
-            // ]}
-          >
+          <Form.Item name="tags" label={locals.tags}>
             <Select mode="multiple" placeholder={locals.tagRule} allowClear>
-              {tagArr.map((item) => (
-                <Option value={item.value} key={item.value}>
-                  {item.name}
+              {props?.tag.map((item) => (
+                <Option value={item.tag_id} key={item.tag_id}>
+                  {item.tag_name}
                 </Option>
               ))}
             </Select>

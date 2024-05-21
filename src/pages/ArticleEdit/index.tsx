@@ -2,13 +2,14 @@ import {
   addArticle,
   getArticleDetail,
   getCategoryList,
+  getTagList,
   updateArticle,
   upload,
 } from '@/services/ant-design-pro/api';
 import { PageContainer } from '@ant-design/pro-components';
 import { Editor } from '@bytemd/react';
 import { history, useIntl } from '@umijs/max';
-import { Input, message, Spin } from 'antd';
+import { Input, Spin, message } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'umi';
@@ -54,6 +55,7 @@ const App: React.FC = () => {
   });
   const [spinning, setSpinning] = useState(false);
   const [category, setCategory] = useState<API.CategoryListItem[]>([]);
+  const [tag, setTag] = useState<API.TagListItem[]>([]);
   const params = useParams();
 
   /**
@@ -91,6 +93,18 @@ const App: React.FC = () => {
     } catch (e) {}
   };
 
+  // 获取标签列表
+  const getTag = async () => {
+    try {
+      const { code, data, message } = await getTagList();
+      if (code === 200) {
+        setTag(data);
+      } else {
+        messageApi.warning(message);
+      }
+    } catch (e) {}
+  };
+
   // 发布或编辑
   const onPublic = async (params: {
     category: string;
@@ -113,9 +127,9 @@ const App: React.FC = () => {
         ...params,
         content,
         title,
-        category: undefined,
-        tag: undefined,
+        category: undefined
       };
+      console.log('articleParams', articleParams);
       const res = popoverParams.article_id
         ? await updateArticle({ ...articleParams, article_id: popoverParams.article_id })
         : await addArticle(articleParams);
@@ -159,6 +173,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (params.id !== 'new') getArticle();
     getCategory();
+    getTag();
   }, []);
 
   return (
@@ -184,6 +199,7 @@ const App: React.FC = () => {
               onPublic={onPublic}
               popoverParams={popoverParams}
               category={category}
+              tag={tag}
             ></PublicPopOver>
           </div>
           <div className={style.editor}>

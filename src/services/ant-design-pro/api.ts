@@ -220,3 +220,45 @@ export async function removeRule(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+/** 获取标签列表 POST */
+export async function getTagList(
+  params?: API.ArticleListParams,
+  sort?: API.PageSort,
+  options?: { [key: string]: any },
+) {
+  const paramsMap = {
+    offset: params?.current ?? 0,
+    length: params?.pageSize ?? 20,
+  };
+
+  const res = await request<API.TagList>('/api/v1/tag/list', {
+    method: 'POST',
+    data: { ...(paramsMap || {}), sort: sort && Object.keys(sort).length > 0 ? sort : undefined },
+    ...(options || {}),
+  }).catch((e) => {});
+  if (res?.code === 200) {
+    return {
+      data: res?.data?.list || [],
+      success: true,
+      total: res?.data?.total,
+      message: res.message,
+      code: res.code,
+    };
+  } else {
+    return {
+      data: [],
+      success: false,
+      total: 0,
+    };
+  }
+}
+
+/** 新建标签  */
+export async function addTag(params?: { [key: string]: any }) {
+  console.log('params', params);
+  return request<API.AddTagParams>('/api/v1/tag/add', {
+    method: 'POST',
+    data: { ...params },
+  });
+}

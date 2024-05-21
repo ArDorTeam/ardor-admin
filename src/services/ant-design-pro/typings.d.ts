@@ -201,11 +201,36 @@ declare namespace API {
     message?: string;
   };
 
+  type TagList = {
+    data?: {
+      list?: TagListItem[];
+      total?: number;
+    };
+    /** 列表的内容总数 */
+    success?: boolean;
+    code?: number;
+    message?: string;
+  };
+
   type CategoryListItem = {
     id: string; // 主键id
     category_id: string; // 分类id
     title: string; // 分类标题
     gmt_create: string; // 创建时间
     gmt_modified: string; // 更新时间
+  };
+
+  type TagListItem = {
+    tag_name: string; // 主键id
+    tag_id: string; // 主键id
+    sort_id: string; // 排序id
+    status: string; // 标签状态
+    gmt_create: string; // 创建时间
+    gmt_modified: string; // 更新时间
+  };
+
+  type AddTagParams = {
+    tagName: string; // 标签标题
+    status?: string; // 标签状态
   };
 }
